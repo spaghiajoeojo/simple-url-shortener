@@ -1,0 +1,28 @@
+version: "3.2"
+services:
+  client:
+    container_name: client
+    build: sus-client
+    ports:
+      - 8080:8080
+    restart: unless-stopped
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+  rabbitmq:
+    image: rabbitmq:alpine
+    container_name: 'rabbitmq'
+    ports:
+        - 5672:5672
+        - 15672:15672
+    volumes:
+        - .data/rabbitmq:/var/lib/rabbitmq/
+        - .log/rabbitmq:/var/log/rabbitmq
+    healthcheck:
+        test: rabbitmq-diagnostics -q ping
+        interval: 10s
+        timeout: 5s
+        retries: 5
+  redis:
+    image: redis:alpine
+    container_name: redis
