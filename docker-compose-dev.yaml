@@ -39,5 +39,5 @@ services:
         timeout: 5s
         retries: 5
   redis:
-    image: redis:alpine
+    image: redis/redis-stack-server
     container_name: redis

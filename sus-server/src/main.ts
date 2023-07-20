@@ -1,10 +1,3 @@
-import { ExpressBeans } from 'express-beans';
-import HealthCheckRouter from '@/routes/HealthCheckRouter';
-import ExampleRouter from '@/routes/ExampleRouter';
+import Consumer from '@/Consumer';
 
-ExpressBeans.createApp({
-  routerBeans: [
-    ExampleRouter,
-    HealthCheckRouter,
-  ],
-});
+Consumer.getIntance().init();

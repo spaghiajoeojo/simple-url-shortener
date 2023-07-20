@@ -3,7 +3,7 @@ import { InjectBean, Route, RouterBean } from 'express-beans';
 import TaskService from '@/services/TaskService';
 
 @RouterBean('/short')
-export default class ExampleRouter {
+export default class ShortRouter {
   @InjectBean(TaskService)
   private taskService!: TaskService;
 
@@ -18,8 +18,11 @@ export default class ExampleRouter {
     if (!url) {
       res.status(400).send({ reason: 'An URL must be provided' });
     }
-    await this.taskService.enqueue(user, url);
-    res.status(200).end('OK');
+    const { result, error } = await this.taskService.enqueue({ user, url });
+    if (error) {
+      res.status(500).send({ reason: error });
+    }
+    res.status(200).end(`${new URL(req.url, `http://${req.headers.host}`)}u/${result}`);
   }
 
   async get(_req: Request, res: Response) {

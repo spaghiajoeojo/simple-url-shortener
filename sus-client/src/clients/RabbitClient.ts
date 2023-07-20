@@ -1,5 +1,7 @@
 import { Bean } from 'express-beans';
-import { Channel, Connection, connect } from 'amqplib';
+import {
+  Channel, Connection, ConsumeMessage, connect,
+} from 'amqplib';
 
 @Bean
 export default class RabbitClient {
@@ -16,9 +18,29 @@ export default class RabbitClient {
     this.channel = await this.connection.createChannel();
   }
 
-  async enqueueTask(user: string, url: string) {
-    const { queue } = await this.channel.assertQueue('tasks');
-    console.log(queue);
-    this.channel.sendToQueue(queue, Buffer.from(JSON.stringify({ user, url })));
+  async getResponseQueue(): Promise<string> {
+    const { queue } = await this.channel.assertQueue('', { exclusive: true });
+    return queue;
+  }
+
+  consume(queue: string, consumer: (msg: ConsumeMessage | null) => void) {
+    this.channel.consume(queue, consumer);
+  }
+
+  ack(msg: ConsumeMessage) {
+    this.channel.ack(msg);
+  }
+
+  sendToQueue(
+    queue: string,
+    content: any,
+    correlationId: string,
+    replyTo: string,
+  ) {
+    this.channel.sendToQueue(
+      queue,
+      Buffer.from(JSON.stringify(content)),
+      { correlationId, replyTo },
+    );
   }
 }
