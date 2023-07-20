@@ -1,0 +1,31 @@
+@startuml sequence_diagram
+participant Web as w
+participant Client as c
+participant RabbitMQ as q
+participant Server as s
+participant Redis as r
+alt GET /stats
+w -> c: GET /stats
+c -> q: enqueue task
+s -> q: dequeue
+s <-- q
+s -> r: get user submissions
+s <-- r
+s -> q
+q --> c: n# submissions
+c --> w
+    
+else GET /stats/:shortId
+w -> c: GET /stats/:shortId
+c -> q: enqueue task
+s -> q: dequeue
+s <-- q
+s -> r: get visits by shortId
+s <-- r
+s -> q
+q --> c: n# visits
+c --> w
+    
+end
+
+@enduml

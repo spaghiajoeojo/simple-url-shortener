@@ -1,0 +1,18 @@
+@startuml sequence_diagram
+participant Web as w
+participant Client as c
+participant RabbitMQ as q
+participant Server as s
+participant Redis as r
+w -> c: POST /short
+c -> q: enqueue task
+s -> q: dequeue
+s <-- q
+activate s
+deactivate s
+s -> r: save (shortId, URL)
+s <-- r
+s -> q
+q --> c: shortId
+c --> w
+@enduml

@@ -19,11 +19,14 @@ export default class Consumer {
 
   init() {
     this.rabbitClient.consume('tasks', (task: Task) => {
+      console.log(`consuming: ${task.type}`);
       switch (task.type) {
       case 'shortening':
         return this.taskService.executeShorteningTask(task);
       case 'stats':
         return this.taskService.executeStatsTask(task);
+      case 'translate':
+        return this.taskService.executeTranslateTask(task);
       default:
         throw new Error('Cannot execute task: task type unknown');
       }

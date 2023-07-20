@@ -5,11 +5,11 @@ export default class Task {
 
   shortId?: string;
 
-  type: 'shortening' | 'stats';
+  type: 'shortening' | 'stats' | 'translate';
 
   constructor({
     user, url, shortId, type = 'shortening',
-  }: { user: string, url?: string, shortId?: string, type: 'shortening' | 'stats' }) {
+  }: { user: string, url?: string, shortId?: string, type: 'shortening' | 'stats' | 'translate' }) {
     this.user = user;
     this.url = url;
     this.shortId = shortId;

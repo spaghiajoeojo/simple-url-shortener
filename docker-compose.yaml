@@ -9,6 +9,16 @@ services:
     depends_on:
       rabbitmq:
         condition: service_healthy
+  server:
+    build: sus-server
+    volumes:
+      - ./sus-server:/app
+    deploy:
+      replicas: 5
+    restart: unless-stopped
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
   rabbitmq:
     image: rabbitmq:alpine
     container_name: 'rabbitmq'
@@ -24,5 +34,5 @@ services:
         timeout: 5s
         retries: 5
   redis:
-    image: redis:alpine
+    image: redis/redis-stack-server
     container_name: redis

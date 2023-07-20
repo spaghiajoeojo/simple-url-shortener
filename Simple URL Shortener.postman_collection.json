@@ -1,0 +1,160 @@
+{
+	"info": {
+		"_postman_id": "f3cd1fc9-d4c2-4cf4-a0d7-bb521f14aca2",
+		"name": "Simple URL Shortener",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8020165"
+	},
+	"item": [
+		{
+			"name": "Add URL",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"shortId\", pm.response.text().slice(-6));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-user",
+						"value": "{{user}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"url\": \"https://www.youtube.com/watch?v=dQw4w9WgXcQ\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/short",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"short"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Submissions",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-user",
+						"value": "{{user}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:8080/stats",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Visit Count",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-user",
+						"value": "{{user}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:8080/stats/{{shortId}}",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"stats",
+						"{{shortId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve URL",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-user",
+						"value": "{{user}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:8080/u/{{shortId}}",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"u",
+						"{{shortId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "user",
+			"value": "user@mail.com",
+			"type": "string"
+		},
+		{
+			"key": "shortId",
+			"value": "ipl581",
+			"type": "string"
+		}
+	]
+}

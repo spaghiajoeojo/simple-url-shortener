@@ -14,7 +14,7 @@ export default class StatsRouter {
       res.status(400).send({ reason: 'User identification must be provided' });
       return;
     }
-    const { result, error } = await this.taskService.enqueue({ user, type: 'stats' });
+    const { result, error } = await this.taskService.send({ user, type: 'stats' });
     if (error) {
       res.status(500).send({ reason: error });
       return;
@@ -29,15 +29,11 @@ export default class StatsRouter {
       res.status(400).send({ reason: 'User identification must be provided' });
       return;
     }
-    const { result, error } = await this.taskService.enqueue({ user, shortId: req.params.shortId, type: 'stats' });
+    const { result, error } = await this.taskService.send({ user, shortId: req.params.shortId, type: 'stats' });
     if (error) {
       res.status(500).send({ reason: error });
       return;
     }
     res.status(200).end(result);
-  }
-
-  async get(_req: Request, res: Response) {
-    res.end('get');
   }
 }

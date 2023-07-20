@@ -18,7 +18,7 @@ export default class ShortRouter {
     if (!url) {
       res.status(400).send({ reason: 'An URL must be provided' });
     }
-    const { result, error } = await this.taskService.enqueue({ user, url });
+    const { result, error } = await this.taskService.send({ user, url });
     if (error) {
       res.status(500).send({ reason: error });
     }

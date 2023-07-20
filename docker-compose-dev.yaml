@@ -1,7 +1,6 @@
 version: "3.2"
 services:
   client-dev:
-    container_name: client
     build:
       context: sus-client
       dockerfile: Dockerfile.dev
@@ -14,7 +13,8 @@ services:
       rabbitmq:
         condition: service_healthy
   server-dev:
-    container_name: server
+    deploy:
+      replicas: 5
     build:
       context: sus-server
       dockerfile: Dockerfile.dev

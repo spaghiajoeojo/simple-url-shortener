@@ -11,7 +11,7 @@ export default class TaskService {
   @InjectBean(RabbitClient)
   private rabbitClient!: RabbitClient;
 
-  async enqueue(task: any): Promise<TaskResult> {
+  async send(task: any): Promise<TaskResult> {
     const queue = await this.rabbitClient.getResponseQueue();
     const correlationId = randomUUID();
     const replyTo = queue;
@@ -21,7 +21,6 @@ export default class TaskService {
         (msg: ConsumeMessage | null) => {
           if (msg?.properties.correlationId === correlationId) {
             this.rabbitClient.ack(msg);
-            console.log('@@@@@@@@@@@@@@@');
             resolve(JSON.parse(msg.content.toString()));
           }
         },

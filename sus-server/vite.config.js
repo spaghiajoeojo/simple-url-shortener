@@ -30,7 +30,10 @@ export default defineConfig(({ mode }) => {
         plugins: [
           typescript({ module: 'esnext' }),
         ],
-        external: Object.keys(packageJson.dependencies),
+        external: [
+          ...Object.keys(packageJson.dependencies),
+          'crypto',
+        ],
       },
     },
     define: {

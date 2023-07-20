@@ -4,13 +4,13 @@ participant Client as c
 participant RabbitMQ as q
 participant Server as s
 participant Redis as r
-w -> c: task submission
+w -> c: GET /u/:shortId
 c -> q: enqueue task
 s -> q: dequeue
 s <-- q
-activate s
-deactivate s
-s -> r
-r --> c
-c --> w
+s -> r: get URL
+s <-- r
+s -> q
+q --> c: URL
+c --> w: redirect(URL)
 @enduml

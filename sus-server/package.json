@@ -7,7 +7,7 @@
     "build": "vite build",
     "lint": "eslint --ext .js,.ts --ignore-path .gitignore --no-fix src test",
     "start:preview": "cross-env NODE_ENV=production nodemon ./dist/server.js",
-    "start:prod": "NODE_ENV=production nodemon server.js",
+    "start:prod": "NODE_ENV=production nodemon ./dist/server.js",
     "test": "jest",
     "coverage": "jest --coverage"
   },

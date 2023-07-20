@@ -29,6 +29,19 @@ export default class TaskService {
     }
   }
 
+  async executeTranslateTask(task: Task): Promise<string | null> {
+    try {
+      if (!task.shortId) {
+        throw new Error('Cannot execute task: id not provided');
+      }
+      const url = (await this.redisClient.getURL(task.user, task.shortId)).toString();
+      this.redisClient.addVisit(task.user, task.shortId);
+      return url;
+    } catch (err) {
+      return null;
+    }
+  }
+
   private generateRandomId(length: number): string {
     const alphabet = 'abcdefghijklmnopqrstuvwxyz0123456789';
     const chars = Array(length).fill('*');
